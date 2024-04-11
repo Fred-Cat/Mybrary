@@ -47,3 +47,4 @@ app.listen(process.env.PORT || 3000, () => console.log('PORT: 3000'))
 
 
 
+// TODO, it doesn't seem to connect to mongo on render.com. add console.log somehow containing the actual connection error so i know what to do about it. 
