@@ -13,16 +13,19 @@ import bodyParser from 'body-parser' // deprecated
 import indexRouter from './routes/index.js'
 import authorRouter from './routes/authors.js'
 
+(async () => {
+    if (process.env.NODE_ENV != 'production') {
+        const dotenv = await import('dotenv')
+        dotenv.config()
+    }
 
-if (process.env.NODE_ENV != 'production') {
-    import('dotenv').then(mod => {
-        mod.config()
+    try {
         mongoose.connect(process.env.DATABASE_URL)
-        const db = mongoose.connection
-        db.on('error', error => console.error(error))
-        db.once('open', () => console.log('Connected to Mongoose'))
-    })
-}
+        console.log('Connected to Mongoose')
+    } catch (e) { console.log('Failed to connect: ' + e) }
+
+})()
+
 
 // I still have no idea what's happening here
 const app = express()
@@ -34,17 +37,10 @@ app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: false })) // deprecated use...
 // app.use(express.urlencoded({ limit: '10mb', extended: false }))
 
-
 app.use('/', indexRouter)
 app.use('/authors', authorRouter)
 
 
+app.listen(process.env.PORT || 3000, () => console.log('PORT: ' + process.env.PORT))
 
 
-app.listen(process.env.PORT || 3000, () => console.log('PORT: 3000'))
-
-
-
-
-
-// TODO, it doesn't seem to connect to mongo on render.com. add console.log somehow containing the actual connection error so i know what to do about it. 
