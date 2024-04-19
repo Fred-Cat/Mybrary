@@ -12,6 +12,7 @@ import bodyParser from 'body-parser' // deprecated
 
 import indexRouter from './routes/index.js'
 import authorRouter from './routes/authors.js'
+import bookRouter from './routes/books.js'
 
 (async () => {
     if (process.env.NODE_ENV != 'production') {
@@ -39,8 +40,10 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: false })) // deprecated
 
 app.use('/', indexRouter)
 app.use('/authors', authorRouter)
+app.use('/books', bookRouter)
 
 
-app.listen(process.env.PORT || 3000, () => console.log('PORT: ' + process.env.PORT))
+const port = process.env.PORT || 3000
+app.listen(port, () => console.log('PORT: ' + port))
 
 
