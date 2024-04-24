@@ -9,6 +9,7 @@ import ejs from 'ejs'
 import expressLayouts from 'express-ejs-layouts'
 import mongoose from 'mongoose'
 import bodyParser from 'body-parser' // deprecated
+import methodOverride from 'method-override'
 
 import indexRouter from './routes/index.js'
 import authorRouter from './routes/authors.js'
@@ -36,7 +37,8 @@ app.set('layout', 'layouts/layout')
 app.use(expressLayouts)
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: false })) // deprecated use...
-// app.use(express.urlencoded({ limit: '10mb', extended: false }))
+// app.use(express.urlencoded({ limit: '10mb', extended: false })) // newer
+app.use(methodOverride('_method'))
 
 app.use('/', indexRouter)
 app.use('/authors', authorRouter)
